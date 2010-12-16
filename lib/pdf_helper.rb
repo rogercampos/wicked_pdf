@@ -16,13 +16,13 @@ module PdfHelper
     end
   end
 
-  private
-    def make_pdf(options = {})
-      html_string = render_to_string(:template => options[:template], :layout => options[:layout])
-      w = WickedPdf.new(options[:wkhtmltopdf])
-      w.pdf_from_string(html_string, options)
-    end
+  def make_pdf(options = {})
+    html_string = render_to_string(:template => options[:template], :layout => options[:layout])
+    w = WickedPdf.new(options[:wkhtmltopdf])
+    w.pdf_from_string(html_string, options)
+  end
 
+  private
     def make_and_send_pdf(pdf_name, options = {})
       options[:wkhtmltopdf] ||= nil
       options[:layout] ||= false
