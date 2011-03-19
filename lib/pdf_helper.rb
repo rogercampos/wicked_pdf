@@ -20,6 +20,7 @@ module PdfHelper
   def make_pdf(options = {})
     html_string = render_to_string(:template => options[:template], :layout => options[:layout])
     w = WickedPdf.new(options[:wkhtmltopdf])
+    options[:basic_auth] = options[:basic_auth].split(" ").last if options[:basic_auth]
     w.pdf_from_string(html_string, options)
   end
 
