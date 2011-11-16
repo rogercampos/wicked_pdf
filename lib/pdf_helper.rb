@@ -31,6 +31,13 @@ module PdfHelper
     end
   end
 
+  def make_pdf(options = {})
+    html_string = render_to_string(:template => options[:template], :layout => options[:layout])
+    options = prerender_header_and_footer(options)
+    w = WickedPdf.new(options[:wkhtmltopdf])
+    w.pdf_from_string(html_string, options)
+  end
+
   private
 
     def log_pdf_creation
@@ -48,13 +55,6 @@ module PdfHelper
       if defined?(@hf_tempfiles)
         @hf_tempfiles.each { |tf| tf.close! }
       end
-    end
-
-    def make_pdf(options = {})
-      html_string = render_to_string(:template => options[:template], :layout => options[:layout])
-      options = prerender_header_and_footer(options)
-      w = WickedPdf.new(options[:wkhtmltopdf])
-      w.pdf_from_string(html_string, options)
     end
 
     def make_and_send_pdf(pdf_name, options={})
